@@ -263,9 +263,10 @@ def main():
     trx = cols3[2].checkbox('TRX/USDT')
     neo = cols3[2].checkbox('NEO/USDT')
     eos = cols3[2].checkbox('EOS/USDT')
+    dot = cols3[2].checkbox('DOT/USDT')
     
     liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
-                     ltc, bch, link, vet, xml, fil, trx, neo, eos])
+                     ltc, bch, link, vet, xml, fil, trx, neo, eos,dot])
     
     download_all=st.button('Telecharger les cryptos selectionnées en .csv') 
    
