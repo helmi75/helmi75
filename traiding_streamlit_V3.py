@@ -16,7 +16,7 @@ import base64
 
 
 exchange = ccxt.binance({
-    'apiKey': apiKey,    
+       
     'enableRateLimit': True
     })
 
