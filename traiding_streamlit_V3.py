@@ -191,7 +191,7 @@ def main():
                  ['4h','6h','8h','12h'])
     liste_crypto = np.array(['BTC/USDT', 'ETH/USDT', 'ADA/USDT','DOGE/USDT', 'BNB/USDT', 'UNI/USDT',
                     'LTC/USDT', 'BCH/USDT', 'LINK/USDT', 'VET/USDT', 'XLM/USDT', 'FIL/USDT','TRX/USDT', 
-                    'NEO/USDT','EOS/USDT'])
+                    'NEO/USDT','EOS/USDT','DOT/USDT'])
 
     
     exchange.load_markets()    
