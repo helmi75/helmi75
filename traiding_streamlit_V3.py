@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 from time import time 
 from datetime import timedelta
-import seaborn as sns
 import plotly.express as px
 import streamlit as st
 import plotly.graph_objects as go
