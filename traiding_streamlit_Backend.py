@@ -76,7 +76,7 @@ def convert_time(dataframe):
   temps=[]
   for elm in  dataframe['timestamp']:
     temps.append(datetime.fromtimestamp(elm/1000))     
-  dataframe['timestamp'] =pd.DatetimeIndex(pd.to_datetime(temps)).tz_localize('UTC').tz_convert('US/Eastern')
+  dataframe['timestamp'] =pd.DatetimeIndex(pd.to_datetime(temps)).tz_localize('UTC').tz_convert('Europe/Paris')
   return dataframe
 
 
@@ -181,12 +181,44 @@ def to_timestamp(date):
     return timestamp
 
 
+# algorithme  qui cherche la meilleur valeur d'une crypto à  un instant t 
+# ENtrée dataframe 
+#sortie dataframe 2 colinnes 
+
+def meilleur_varaition(dataframe):  
+    max_var = dataframe.max(axis=1)
+    name_max_var = dataframe.idxmax(axis=1)
+    concat_meilleur_var = pd.concat([max_var, name_max_var],axis=1)     
+    return concat_meilleur_var
+    
+def maxbot1 (dictionnaire_crypto):
+    liste_var =[]
+    liste_crypto=[]
+    index=[]
+    for nom_crypto in dictionnaire_crypto :
+      liste_var.append(dictionnaire_crypto[nom_crypto][nom_crypto[:3]+'_var'])
+      liste_crypto.append(nom_crypto[:3]+'_var') 
+    index = dictionnaire_crypto[nom_crypto].index
+    df_liste_var = pd.DataFrame(np.transpose(liste_var),columns=[liste_crypto]).set_index(index)
+   
+    return df_liste_var
+    
+      
+    
+
+
+        
+    
+
+
 
 
 def main():
     
     st.title('Test Crypto')
-    debut_time = to_timestamp(str(st.sidebar.date_input('date de début')))    
+    date_init = datetime.now() - timedelta(days = 30)       
+    star_time = to_timestamp(str(st.sidebar.date_input('date de début',date_init ))) #1502928000000
+    end_time = to_timestamp(str(st.sidebar.date_input('date de fin')))
     delta_hour = st.sidebar.selectbox('selectionner une plage auraire',
                  ['4h','6h','8h','12h'])
     liste_crypto = np.array(['BTC/USDT', 'ETH/USDT', 'ADA/USDT','DOGE/USDT', 'BNB/USDT', 'UNI/USDT',
@@ -202,14 +234,14 @@ def main():
     
     
     crypto = {}
-    star_time=  debut_time #1502928000000
-    end_time= int(datetime.now().timestamp()*1000)
+    boxmax ={}
+    #end_time= int(datetime.now().timestamp()*1000)
     
 
     mar1 =1502928000000
     mar2 = 1597874400000
 
-    print( 'depart',  debut_time )
+    print( 'depart',  star_time )
     print('arriver',datetime.fromtimestamp (1619647200000/1000))
     market= liste_crypto #["BTC/USDT",'ETH/USDT','ADA/USDT','BNB/USDT','DOGE/USDT' ]
     
@@ -230,10 +262,12 @@ def main():
         x =elm.lower() 
         crypto[x] = crypto[x].merge(variation(crypto[x]),on ='timestamp',how='left')       
         crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
-        crypto[x]  = fonction_cumul(crypto[x],x)
-        
+        crypto[x]  = fonction_cumul(crypto[x],x)    
     
+    crypto['bx1'] = meilleur_varaition(maxbot1 (crypto)).rename(columns={0:'meilleur_var',1:'name_meilleur_var'})
     
+    #boxmax['boxmax1'] = 
+    #print(boxmax['boxmax1'])
    
     
     
@@ -264,9 +298,10 @@ def main():
     neo = cols3[2].checkbox('NEO/USDT')
     eos = cols3[2].checkbox('EOS/USDT')
     dot = cols3[2].checkbox('DOT/USDT')
+    bx1 = cols3[1].checkbox('BX1')
     
     liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
-                     ltc, bch, link, vet, xml, fil, trx, neo, eos,dot])
+                     ltc, bch, link, vet, xml, fil, trx, neo, eos, dot, bx1])
     
     download_all=st.button('Telecharger les cryptos selectionnées en .csv') 
    
@@ -277,10 +312,12 @@ def main():
         b64 = base64.b64encode(csv.encode()).decode()  # some strings
         linko= f'<a href="data:file/csv;base64,{b64}" download='+select_crypto.lower()+'.csv>Download csv file</a>'
         st.markdown(linko, unsafe_allow_html=True)
-        
+    liste_crypto= np.append(liste_crypto,'BX1') 
+    print(liste_crypto)
     st.write(liste_crypto[liste_boolean]) 
     if download_all :      
         st.write('Liens de téléchargement des cryptos sélectionnées ')
+        
         for elm in liste_crypto[liste_boolean] :
             df_download= crypto[elm.lower()].reset_index()
             csv = df_download.to_csv(index=False)
