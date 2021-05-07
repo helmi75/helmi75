@@ -183,13 +183,14 @@ def to_timestamp(date):
 
 # algorithme  qui cherche la meilleur valeur d'une crypto à  un instant t 
 # ENtrée dataframe 
-#sortie dataframe 2 colinnes 
+#sortie dataframe 2 colinnes    
 
 def meilleur_varaition(dataframe):  
     max_var = dataframe.max(axis=1)
     name_max_var = dataframe.idxmax(axis=1)
     concat_meilleur_var = pd.concat([max_var, name_max_var],axis=1)  
     concat_meilleur_var['variation_bx1'] = (concat_meilleur_var[0]*100)-100
+    print(concat_meilleur_var['variation_bx1'][concat_meilleur_var['variation_bx1']>10])
     concat_meilleur_var['cumul_bx1']=concat_meilleur_var['variation_bx1'].cumsum()
     return concat_meilleur_var
 
@@ -248,7 +249,41 @@ def main():
 
     print( 'depart',  star_time )
     print('arriver',datetime.fromtimestamp (1619647200000/1000))
-    market= liste_crypto #["BTC/USDT",'ETH/USDT','ADA/USDT','BNB/USDT','DOGE/USDT' ]
+    
+    
+    st.title("Selectionnez les cryptos !")
+    
+    cols3 = st.beta_columns(3) 
+    
+    btc = cols3[0].checkbox('BTC/USDT')
+    eth = cols3[0].checkbox('ETH/USDT')
+    ada = cols3[0].checkbox('ADA/USDT')
+    doge = cols3[0].checkbox('DOGE/USDT')
+    bnb = cols3[0].checkbox('BNB/USDT')
+    uni = cols3[1].checkbox('UNI/USDT')
+    bch = cols3[1].checkbox('BCH/USDT')
+    link = cols3[1].checkbox('LINK/USDT')
+    vet = cols3[1].checkbox('VET/USDT')
+    xml = cols3[1].checkbox('XLM/USDT')
+    fil = cols3[2].checkbox('FIL/USDT')
+    ltc = cols3[2].checkbox('LTC/USDT')
+    trx = cols3[2].checkbox('TRX/USDT')
+    neo = cols3[2].checkbox('NEO/USDT')
+    eos = cols3[2].checkbox('EOS/USDT')
+    dot = cols3[2].checkbox('DOT/USDT')
+    #bx1 = cols3[1].checkbox('BX1/USDT')
+    
+    liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
+                     ltc, bch, link, vet, xml, fil, trx, neo, eos, dot])
+    
+    #liste_crypto= np.append(liste_crypto,'BX1/USDT')     
+    st.write(liste_crypto[liste_boolean])
+    
+    
+    
+    
+    market= liste_crypto[liste_boolean]
+    print(market)#["BTC/USDT",'ETH/USDT','ADA/USDT','BNB/USDT','DOGE/USDT' ]
     
     for elm in market :
         x =elm.lower()   
@@ -269,7 +304,7 @@ def main():
         crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
         crypto[x]  = fonction_cumul(crypto[x],x)   
     crypto['bx1/usdt'] = meilleur_varaition(maxbot1 (crypto)).rename(columns={0:'bx1_var',1:'name_meilleur_var'})
-    print(crypto['bx1/usdt'])
+    
     #crypto['bx1/usdt']['coef_multi_bx1'] = crypto['bx1/usdt'].cumprod()
     #crypto['bx1/usdt'] = fonction_cumul(crypto['bx1/usdt'],'bx1/usdt')
    
@@ -304,29 +339,8 @@ def main():
     
     
     
-    st.title("Selectionnez les cryptos à télécharger !")
-    cols3 = st.beta_columns(3) 
     
-    btc = cols3[0].checkbox('BTC/USDT')
-    eth = cols3[0].checkbox('ETH/USDT')
-    ada = cols3[0].checkbox('ADA/USDT')
-    doge = cols3[0].checkbox('DOGE/USDT')
-    bnb = cols3[0].checkbox('BNB/USDT')
-    uni = cols3[1].checkbox('UNI/USDT')
-    bch = cols3[1].checkbox('BCH/USDT')
-    link = cols3[1].checkbox('LINK/USDT')
-    vet = cols3[1].checkbox('VET/USDT')
-    xml = cols3[1].checkbox('XLM/USDT')
-    fil = cols3[2].checkbox('FIL/USDT')
-    ltc = cols3[2].checkbox('LTC/USDT')
-    trx = cols3[2].checkbox('TRX/USDT')
-    neo = cols3[2].checkbox('NEO/USDT')
-    eos = cols3[2].checkbox('EOS/USDT')
-    dot = cols3[2].checkbox('DOT/USDT')
-    bx1 = cols3[1].checkbox('BX1/USDT')
     
-    liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
-                     ltc, bch, link, vet, xml, fil, trx, neo, eos, dot, bx1])
      
     
     
@@ -335,8 +349,7 @@ def main():
     
     download_all=st.button('Telecharger les cryptos selectionnées en .csv')        
         
-    liste_crypto= np.append(liste_crypto,'BX1/USDT')     
-    st.write(liste_crypto[liste_boolean])
+    
     
     
     if download_all :      
