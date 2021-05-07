@@ -41,7 +41,7 @@ def variation (dataframe) :
   
   open_ = dataframe[dataframe.columns[0]]
   close = dataframe[dataframe.columns[1]]  
-  serie_variation = (close/open_)
+  serie_variation = ((close)/open_)
   df_serie_variation = pd.DataFrame(serie_variation, dataframe.index, columns=[dataframe.columns[0][:3]+'_var'])
   return df_serie_variation
 
@@ -157,7 +157,7 @@ def down_all_coin(name_crypto ,star_time, end_time, delta_hour):
 
 
 def fonction_cumul(dataframe, name_crypto ):
-  dataframe['cumul%']=((dataframe['coef_multi_'+name_crypto[:3]])*100)-100
+  dataframe['cumul_'+name_crypto[:3]]=((dataframe['coef_multi_'+name_crypto[:3]])*100)-100
   return dataframe
 
 def coef_multi2(dataframe,fontion_variation ):   
@@ -172,7 +172,7 @@ def coef_multi2(dataframe,fontion_variation ):
 
 def plotly(dataframe,cumul):
    fig=go.Figure() 
-   fig = fig.add_trace(go.Scatter(x= dataframe.index, y= dataframe[cumul],mode='lines',name='test affichage'))
+   fig.add_trace(go.Scatter(x= dataframe.index, y= dataframe[cumul],mode='lines',name='test affichage'))
    return fig
     
 def to_timestamp(date):
@@ -188,8 +188,11 @@ def to_timestamp(date):
 def meilleur_varaition(dataframe):  
     max_var = dataframe.max(axis=1)
     name_max_var = dataframe.idxmax(axis=1)
-    concat_meilleur_var = pd.concat([max_var, name_max_var],axis=1)     
+    concat_meilleur_var = pd.concat([max_var, name_max_var],axis=1)  
+    concat_meilleur_var['variation_bx1'] = (concat_meilleur_var[0]*100)-100
+    concat_meilleur_var['cumul_bx1']=concat_meilleur_var['variation_bx1'].cumsum()
     return concat_meilleur_var
+
     
 def maxbot1 (dictionnaire_crypto):
     liste_var =[]
@@ -216,10 +219,12 @@ def maxbot1 (dictionnaire_crypto):
 def main():
     
     st.title('Test Crypto')
+    cols2 = st.beta_columns(2)
+    
     date_init = datetime.now() - timedelta(days = 30)       
-    star_time = to_timestamp(str(st.sidebar.date_input('date de début',date_init ))) #1502928000000
-    end_time = to_timestamp(str(st.sidebar.date_input('date de fin')))
-    delta_hour = st.sidebar.selectbox('selectionner une plage auraire',
+    star_time = to_timestamp(str(cols2[0].date_input('date de début',date_init ))) #1502928000000
+    end_time = to_timestamp(str(cols2[0].date_input('date de fin')))
+    delta_hour = cols2[0].selectbox('selectionner une plage auraire',
                  ['4h','6h','8h','12h'])
     liste_crypto = np.array(['BTC/USDT', 'ETH/USDT', 'ADA/USDT','DOGE/USDT', 'BNB/USDT', 'UNI/USDT',
                     'LTC/USDT', 'BCH/USDT', 'LINK/USDT', 'VET/USDT', 'XLM/USDT', 'FIL/USDT','TRX/USDT', 
@@ -262,9 +267,13 @@ def main():
         x =elm.lower() 
         crypto[x] = crypto[x].merge(variation(crypto[x]),on ='timestamp',how='left')       
         crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
-        crypto[x]  = fonction_cumul(crypto[x],x)    
+        crypto[x]  = fonction_cumul(crypto[x],x)   
+    crypto['bx1/usdt'] = meilleur_varaition(maxbot1 (crypto)).rename(columns={0:'bx1_var',1:'name_meilleur_var'})
+    print(crypto['bx1/usdt'])
+    #crypto['bx1/usdt']['coef_multi_bx1'] = crypto['bx1/usdt'].cumprod()
+    #crypto['bx1/usdt'] = fonction_cumul(crypto['bx1/usdt'],'bx1/usdt')
+   
     
-    crypto['bx1'] = meilleur_varaition(maxbot1 (crypto)).rename(columns={0:'meilleur_var',1:'name_meilleur_var'})
     
     #boxmax['boxmax1'] = 
     #print(boxmax['boxmax1'])
@@ -272,15 +281,31 @@ def main():
     
     
     
-    select_crypto = st.selectbox('selectionner une crypto',liste_crypto )
     
-    st.dataframe(crypto[select_crypto.lower()])    
-    st.plotly_chart(plotly(crypto[select_crypto.lower()], select_crypto.lower()[:3]+'_close'))
+    fig=go.Figure()
+    for elm in crypto: 
+        
+        fig.add_trace(go.Scatter(x= crypto[elm].index, 
+                                 y= crypto[elm]['cumul_'+elm[:3]],
+                                 mode='lines',
+                                 name=elm[:3],
+                                 ))  
+    fig.update_layout(
+    title="Variation cumulées ",
+    xaxis_title="date",
+    yaxis_title="cumul ",
+    legend_title="cryptos",
+    )
+        
+    st.plotly_chart(fig)
+       
     
-    download=st.button('Telecharger '+select_crypto.lower()+'.csv')
+    
+    
+    
     
     st.title("Selectionnez les cryptos à télécharger !")
-    cols3 = st.beta_columns(3)  
+    cols3 = st.beta_columns(3) 
     
     btc = cols3[0].checkbox('BTC/USDT')
     eth = cols3[0].checkbox('ETH/USDT')
@@ -298,23 +323,22 @@ def main():
     neo = cols3[2].checkbox('NEO/USDT')
     eos = cols3[2].checkbox('EOS/USDT')
     dot = cols3[2].checkbox('DOT/USDT')
-    bx1 = cols3[1].checkbox('BX1')
+    bx1 = cols3[1].checkbox('BX1/USDT')
     
     liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
                      ltc, bch, link, vet, xml, fil, trx, neo, eos, dot, bx1])
+     
     
-    download_all=st.button('Telecharger les cryptos selectionnées en .csv') 
+    
+           
    
-    if download:
-        'Download Started!'        
-        df_download= crypto[select_crypto.lower()].reset_index()
-        csv = df_download.to_csv(index=False)
-        b64 = base64.b64encode(csv.encode()).decode()  # some strings
-        linko= f'<a href="data:file/csv;base64,{b64}" download='+select_crypto.lower()+'.csv>Download csv file</a>'
-        st.markdown(linko, unsafe_allow_html=True)
-    liste_crypto= np.append(liste_crypto,'BX1') 
-    print(liste_crypto)
-    st.write(liste_crypto[liste_boolean]) 
+    
+    download_all=st.button('Telecharger les cryptos selectionnées en .csv')        
+        
+    liste_crypto= np.append(liste_crypto,'BX1/USDT')     
+    st.write(liste_crypto[liste_boolean])
+    
+    
     if download_all :      
         st.write('Liens de téléchargement des cryptos sélectionnées ')
         
