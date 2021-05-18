@@ -308,11 +308,7 @@ def crypto_a_vendre(exchange, minutes, market ):
        
         index_dernier_ordre = df_hystoric_order[name_crypto_low].index.max() 
        
-        liste_df.append(df_hystoric_order[name_crypto_low].loc[index_dernier_ordre])
- 
-      
-      
-      
+        liste_df.append(df_hystoric_order[name_crypto_low].loc[index_dernier_ordre])     
       
     
     df_log = pd.DataFrame(liste_df).set_index('symbol')
@@ -320,3 +316,30 @@ def crypto_a_vendre(exchange, minutes, market ):
     
     crypto_a_vendre = df_log[df_log['side']=='buy'].index[0]
     return crypto_a_vendre
+  
+  
+def choix_market()
+  market= np.array(['BTC/USDT', 'ETH/USDT', 'ADA/USDT','DOGE/USDT', 'BNB/USDT', 'UNI/USDT',
+                    'LTC/USDT', 'BCH/USDT', 'LINK/USDT', 'VET/USDT', 'XLM/USDT', 'FIL/USDT','TRX/USDT', 
+                    'NEO/USDT','EOS/USDT','DOT/USDT'])
+  cols3 = st.beta_columns(3)    
+    btc = cols3[0].checkbox('BTC/USDT')
+    eth = cols3[0].checkbox('ETH/USDT')
+    ada = cols3[0].checkbox('ADA/USDT')
+    doge = cols3[0].checkbox('DOGE/USDT')
+    bnb = cols3[0].checkbox('BNB/USDT')
+    uni = cols3[1].checkbox('UNI/USDT')
+    bch = cols3[1].checkbox('BCH/USDT')
+    link = cols3[1].checkbox('LINK/USDT')
+    vet = cols3[1].checkbox('VET/USDT')
+    xml = cols3[1].checkbox('XLM/USDT')
+    fil = cols3[2].checkbox('FIL/USDT')
+    ltc = cols3[2].checkbox('LTC/USDT')
+    trx = cols3[2].checkbox('TRX/USDT')
+    neo = cols3[2].checkbox('NEO/USDT')
+    eos = cols3[2].checkbox('EOS/USDT')
+    dot = cols3[2].checkbox('DOT/USDT')
+    #bx1 = cols3[1].checkbox('BX1/USDT')    
+  liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
+                     ltc, bch, link, vet, xml, fil, trx, neo, eos, dot])    
+  return liste_crypto[liste_boolean]
