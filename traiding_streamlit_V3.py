@@ -20,7 +20,9 @@ import time as tm
 
  
 crypto ={}
-market=['ETH/USDT','BTC/USDT','UNI/USDT','BNB/USDT','ADA/USDT','KSM/USDT']
+choix_market()
+  
+    
 apiKey = st.text_input("Enter Apikey", type="password")
 secret = st.text_input("Enter a Secretkey", type="password")
 
