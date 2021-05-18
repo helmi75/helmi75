@@ -319,7 +319,7 @@ def crypto_a_vendre(exchange, minutes, market ):
   
   
 def choix_market():
-  market= np.array(['BTC/USDT', 'ETH/USDT', 'ADA/USDT','DOGE/USDT', 'BNB/USDT', 'UNI/USDT',
+  liste_crypto= np.array(['BTC/USDT', 'ETH/USDT', 'ADA/USDT','DOGE/USDT', 'BNB/USDT', 'UNI/USDT',
                     'LTC/USDT', 'BCH/USDT', 'LINK/USDT', 'VET/USDT', 'XLM/USDT', 'FIL/USDT','TRX/USDT', 
                     'NEO/USDT','EOS/USDT','DOT/USDT'])
   cols3 = st.beta_columns(3)    
