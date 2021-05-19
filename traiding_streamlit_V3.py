@@ -20,8 +20,8 @@ import time as tm
 
  
 crypto ={}
-choix_market()
-  
+market = choix_market()
+st.write(market) 
     
 apiKey = st.text_input("Enter Apikey", type="password")
 secret = st.text_input("Enter a Secretkey", type="password")
