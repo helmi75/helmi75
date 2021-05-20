@@ -17,6 +17,22 @@ from fonctions import *
 import time as tm
 
 
+def pipeline_crypto(market, exchange, delta_hour, star_time):
+     
+     crypto ={}
+     for elm in market :
+            x =elm.lower()
+            ohlcv = exchange.fetch_ohlcv(elm , since = star_time,limit = 1000, timeframe = delta_hour)
+            crypto[x] = pd.DataFrame(ohlcv,columns=['timestamp', x[:3]+'_open', 'high','low', x[:3]+'_close', 'volume'])
+            crypto[x] = convert_time(crypto[x])
+            crypto[x] = crypto[x][['timestamp',x[:3]+'_open',x[:3]+'_close']] 
+            crypto[x] = crypto[x].set_index('timestamp')
+            crypto[x] = crypto[x].merge(variation(crypto[x]),on ='timestamp',how='left')
+            crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
+            crypto[x]  = fonction_cumul(crypto[x],x)
+     return crypto
+ 
+
 
 
 market = choix_market()
