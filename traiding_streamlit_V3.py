@@ -77,7 +77,7 @@ tableau_var = meilleur_varaition(df_liste_var)
 tableau_var = meilleur_varaition(df_liste_var) 
 tableau_var['algo'] = algo(tableau_var)
 tableau_var['coef_multi'] = tableau_var['algo'].cumprod()
-#tableau_var['coef_multi'] = (tableau_var['coef_multi']*100)-100
+tableau_var['coef_multi'] = (tableau_var['coef_multi']*100)-100
 plot_courbes(crypto, tableau_var)
 
  
