@@ -17,12 +17,12 @@ from fonctions import *
 import time as tm
 
 
-def pipeline_crypto(market, exchange, delta_hour, star_time):
+def pipeline_crypto(market, exchange, delta_hour):
      
      crypto ={}
      for elm in market :
             x =elm.lower()
-            ohlcv = exchange.fetch_ohlcv(elm , since = star_time,limit = 1000, timeframe = delta_hour)
+            ohlcv = exchange.fetch_ohlcv(elm ,limit = 1000, timeframe = delta_hour)
             crypto[x] = pd.DataFrame(ohlcv,columns=['timestamp', x[:3]+'_open', 'high','low', x[:3]+'_close', 'volume'])
             crypto[x] = convert_time(crypto[x])
             crypto[x] = crypto[x][['timestamp',x[:3]+'_open',x[:3]+'_close']] 
@@ -65,11 +65,11 @@ start_time = datetime.now()
 k=0
 liste_principale=[]
 liste_achat=[]
-liste_vente=[]
+liste_vente=[]  
 temps=[]
 
         
-crypto = pipeline_crypto(market, exchange, delta_hour, star_time)
+crypto = pipeline_crypto(market, exchange, delta_hour)
 
 
 df_liste_var =  fonction_tableau_var(crypto)  
@@ -77,7 +77,7 @@ tableau_var = meilleur_varaition(df_liste_var)
 tableau_var = meilleur_varaition(df_liste_var) 
 tableau_var['algo'] = algo(tableau_var)
 tableau_var['coef_multi'] = tableau_var['algo'].cumprod()
-tableau_var['coef_multi'] = (tableau_var['coef_multi']*100)-100
+#tableau_var['coef_multi'] = (tableau_var['coef_multi']*100)-100
 plot_courbes(crypto, tableau_var)
 
  

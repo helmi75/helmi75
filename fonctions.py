@@ -351,12 +351,12 @@ def choix_market():
 
 
 
-def pipeline_crypto(market, exchange, delta_hour, star_time):
+def pipeline_crypto(market, exchange, delta_hour):
      
      crypto ={}
      for elm in market :
             x =elm.lower()
-            ohlcv = exchange.fetch_ohlcv(elm , since = star_time,limit = 1000, timeframe = delta_hour)
+            ohlcv = exchange.fetch_ohlcv(elm , limit = 1000, timeframe = delta_hour)
             crypto[x] = pd.DataFrame(ohlcv,columns=['timestamp', x[:3]+'_open', 'high','low', x[:3]+'_close', 'volume'])
             crypto[x] = convert_time(crypto[x])
             crypto[x] = crypto[x][['timestamp',x[:3]+'_open',x[:3]+'_close']] 
