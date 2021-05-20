@@ -329,7 +329,7 @@ def choix_market():
                     'NEO/USDT','EOS/USDT','DOT/USDT'])
   cols3 = st.beta_columns(3)    
   btc = cols3[0].checkbox('BTC/USDT')
-  eth = True #cols3[0].checkbox('ETH/USDT')
+  eth = cols3[0].checkbox('ETH/USDT')
   ada = cols3[0].checkbox('ADA/USDT')
   doge = cols3[0].checkbox('DOGE/USDT')
   bnb = cols3[0].checkbox('BNB/USDT')
