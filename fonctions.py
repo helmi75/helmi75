@@ -6,6 +6,11 @@ import numpy as np
 import pandas as pd
 import time as tm
 import streamlit as st
+import plotly.graph_objects as go
+
+
+
+
 
 
 def generation_test(k,name_crypto,timestamp):
@@ -324,7 +329,7 @@ def choix_market():
                     'NEO/USDT','EOS/USDT','DOT/USDT'])
   cols3 = st.beta_columns(3)    
   btc = cols3[0].checkbox('BTC/USDT')
-  eth = cols3[0].checkbox('ETH/USDT')
+  eth = True #cols3[0].checkbox('ETH/USDT')
   ada = cols3[0].checkbox('ADA/USDT')
   doge = cols3[0].checkbox('DOGE/USDT')
   bnb = cols3[0].checkbox('BNB/USDT')
@@ -343,3 +348,44 @@ def choix_market():
   liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
                      ltc, bch, link, vet, xml, fil, trx, neo, eos, dot])    
   return liste_crypto[liste_boolean]
+
+
+
+def pipeline_crypto(market, exchange, delta_hour, star_time):
+     
+     crypto ={}
+     for elm in market :
+            x =elm.lower()
+            ohlcv = exchange.fetch_ohlcv(elm , since = star_time,limit = 1000, timeframe = delta_hour)
+            crypto[x] = pd.DataFrame(ohlcv,columns=['timestamp', x[:3]+'_open', 'high','low', x[:3]+'_close', 'volume'])
+            crypto[x] = convert_time(crypto[x])
+            crypto[x] = crypto[x][['timestamp',x[:3]+'_open',x[:3]+'_close']] 
+            crypto[x] = crypto[x].set_index('timestamp')
+            crypto[x] = crypto[x].merge(variation(crypto[x]),on ='timestamp',how='left')
+            crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
+            crypto[x]  = fonction_cumul(crypto[x],x)
+     return crypto
+ 
+def plot_courbes(crypto, tableau_var):
+    fig=go.Figure()
+    for elm in crypto: 
+        
+        fig.add_trace(go.Scatter(x= crypto[elm].index, 
+                                 y= crypto[elm]['cumul_'+elm[:3]],
+                                 mode='lines',
+                                 name=elm[:3],
+                                 ))  
+    fig.add_trace(go.Scatter(x= tableau_var.index, 
+                                 y= tableau_var['coef_multi'],
+                                 mode='lines',
+                                 name='BX1',
+                                 )) 
+    fig.update_layout(
+    title="Variation cumulées ",
+    xaxis_title="date",
+    yaxis_title="cumul ",
+    legend_title="cryptos",
+    )
+        
+    return st.plotly_chart(fig)
+ 
