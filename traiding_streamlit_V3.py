@@ -68,7 +68,7 @@ def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
                                  mode='lines',
                                  name='coef_cumul_BX1',
                                  ))
-     else :
+    else :
         pass
     
     fig.update_layout(
