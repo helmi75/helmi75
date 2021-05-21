@@ -55,14 +55,14 @@ def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
                                  mode='lines',
                                  name=elm[:3],
                                 ))
-    if st.button('coef_multi_BX1'):
+    if multi_BX1:
         fig.add_trace(go.Scatter(x= tableau_var.index, 
                                  y= tableau_var['coef_multi'],
                                  mode='lines',
                                  name='coef_multi_BX1',
                                  )) 
     
-    if multi_BX1 :
+    if cumul_BX1 :
         fig.add_trace(go.Scatter(x= tableau_var.index, 
                                  y= tableau_var['coef_cumul'],
                                  mode='lines',
