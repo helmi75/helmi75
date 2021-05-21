@@ -53,17 +53,23 @@ def plot_courbes(crypto, tableau_var):
                                  y= crypto[elm]['cumul_'+elm[:3]],
                                  mode='lines',
                                  name=elm[:3],
-                                 ))  
-    fig.add_trace(go.Scatter(x= tableau_var.index, 
+                                ))
+    if st.button('coef_multi_BX1'):
+        fig.add_trace(go.Scatter(x= tableau_var.index, 
                                  y= tableau_var['coef_multi'],
                                  mode='lines',
                                  name='coef_multi_BX1',
                                  )) 
-    fig.add_trace(go.Scatter(x= tableau_var.index, 
+    
+    if st.button('coef_cumul_BX1'):
+        fig.add_trace(go.Scatter(x= tableau_var.index, 
                                  y= tableau_var['coef_cumul'],
                                  mode='lines',
                                  name='coef_cumul_BX1',
                                  ))
+     else :
+        pass
+    
     fig.update_layout(
     title="Variation cumulées ",
     xaxis_title="date",
