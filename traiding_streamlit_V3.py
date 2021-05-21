@@ -40,12 +40,13 @@ def choix_market():
   neo = cols3[2].checkbox('NEO/USDT')
   eos = cols3[2].checkbox('EOS/USDT')
   dot = cols3[2].checkbox('DOT/USDT')
+  
       
   liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
                      ltc, bch, link, vet, xml, fil, trx, neo, eos, dot])    
   return liste_crypto[liste_boolean]
 
-def plot_courbes(crypto, tableau_var):
+def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
     fig=go.Figure()
     for elm in crypto: 
         
@@ -95,9 +96,8 @@ def main():
     
     star_time = to_timestamp(str(st.date_input('date de début',date_init ))) #1502928000000
     end_time = to_timestamp(str(st.date_input('date de fin')))
-    delta_hour = '4h'
-    #st.selectbox('selectionner une plage auraire',
-                 #'4h','6h','8h','12h'])
+    delta_hour = st.selectbox('selectionner une plage auraire',['4h','6h','8h','12h'])
+    
    
     
       
@@ -135,8 +135,11 @@ def main():
     tableau_var['algo'] = algo(tableau_var)
     tableau_var['coef_multi'] = tableau_var['algo'].cumprod()
     tableau_var['coef_cumul']= tableau_var['coef_multi'].apply(lambda x : (x*100)-100)
+    
+    multi_BX1 = st.checkbox('multi_BX1')
+    cumul_BX1 = qt.checkbox('cumul_BX1')
    
-    plot_courbes(crypto, tableau_var)
+    plot_courbes(crypto, tableau_var,multi_BX1, cumul_BX1)
     st.write(tableau_var)
     
    
