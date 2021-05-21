@@ -141,6 +141,23 @@ def down_all_coin(name_crypto ,star_time, end_time, delta_hour,exchange):
   return df_all_coin
 
 
+def pipeline_crypto(market, exchange, star_time, end_time, delta_hour):
+     
+     crypto ={}
+     for elm in market :
+            x =elm.lower()
+            crypto[x] = down_all_coin(elm ,star_time, end_time, delta_hour,exchange)
+            #ohlcv = exchange.fetch_ohlcv(elm , limit = 1000, timeframe = delta_hour)
+            #crypto[x] = pd.DataFrame(ohlcv,columns=['timestamp', x[:3]+'_open', 'high','low', x[:3]+'_close', 'volume'])
+            crypto[x] = convert_time(crypto[x])
+            crypto[x] = crypto[x][['timestamp',x[:3]+'_open',x[:3]+'_close']] 
+            crypto[x] = crypto[x].set_index('timestamp')
+            crypto[x] = crypto[x].merge(variation(crypto[x]),on ='timestamp',how='left')
+            crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
+            crypto[x]  = fonction_cumul(crypto[x],x)
+     return crypto
+
+
 def fonction_cumul(dataframe, name_crypto ):
   dataframe['cumul_'+name_crypto[:3]]=((dataframe['coef_multi_'+name_crypto[:3]])*100)-100
   return dataframe
@@ -344,27 +361,14 @@ def choix_market():
   neo = cols3[2].checkbox('NEO/USDT')
   eos = cols3[2].checkbox('EOS/USDT')
   dot = cols3[2].checkbox('DOT/USDT')
-  #bx1 = cols3[1].checkbox('BX1/USDT')    
+      
   liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
                      ltc, bch, link, vet, xml, fil, trx, neo, eos, dot])    
   return liste_crypto[liste_boolean]
 
 
 
-def pipeline_crypto(market, exchange, delta_hour):
-     
-     crypto ={}
-     for elm in market :
-            x =elm.lower()
-            ohlcv = exchange.fetch_ohlcv(elm , limit = 1000, timeframe = delta_hour)
-            crypto[x] = pd.DataFrame(ohlcv,columns=['timestamp', x[:3]+'_open', 'high','low', x[:3]+'_close', 'volume'])
-            crypto[x] = convert_time(crypto[x])
-            crypto[x] = crypto[x][['timestamp',x[:3]+'_open',x[:3]+'_close']] 
-            crypto[x] = crypto[x].set_index('timestamp')
-            crypto[x] = crypto[x].merge(variation(crypto[x]),on ='timestamp',how='left')
-            crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
-            crypto[x]  = fonction_cumul(crypto[x],x)
-     return crypto
+
  
 def plot_courbes(crypto, tableau_var):
     fig=go.Figure()
@@ -389,3 +393,15 @@ def plot_courbes(crypto, tableau_var):
         
     return st.plotly_chart(fig)
  
+    
+def maxbot1 (dictionnaire_crypto):
+    liste_var =[]
+    liste_crypto=[]
+    index=[]
+    for nom_crypto in dictionnaire_crypto :
+      liste_var.append(dictionnaire_crypto[nom_crypto][nom_crypto[:3]+'_var'])
+      liste_crypto.append(nom_crypto[:3]+'_var') 
+    index = dictionnaire_crypto[nom_crypto].index
+    df_liste_var = pd.DataFrame(np.transpose(liste_var),columns=liste_crypto).set_index(index) 
+    
+    return df_liste_var
