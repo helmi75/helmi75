@@ -70,6 +70,7 @@ def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
                                  ))
     else :
         pass
+      
     
     fig.update_layout(
     title="Variation cumulées ",
@@ -80,17 +81,22 @@ def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
     return st.plotly_chart(fig)
 
 
-def plot_courbes2(tableau_var):
+def plot_courbes2(df_tableau_multi):
     fig=go.Figure()
      
-    for elm in tableau_var.iloc[:,:-5]:
-        tableau_var[elm]       
-        fig.add_trace(go.Scatter(x= tableau_var[elm].index, 
-                                 y= tableau_var[elm],
+    for elm in df_tableau_multi.columns:
+               
+        fig.add_trace(go.Scatter(x= df_tableau_multi[elm].index, 
+                                 y= df_tableau_multi[elm],
                                  mode='lines',
                                  name=elm,
                                  )) 
     return st.plotly_chart(fig)
+  
+  
+  
+  
+  def plot_courbes3(
 
 def main():
     
@@ -139,12 +145,13 @@ def main():
     tableau_var['algo'] = algo(tableau_var)
     tableau_var['coef_multi'] = tableau_var['algo'].cumprod()
     tableau_var['coef_cumul']= tableau_var['coef_multi'].apply(lambda x : (x*100)-100)
-    if st.checkbox('Voir tableau coef multi') 
+    if st.checkbox('Voir tableau coef multi') :
       st.write(pd.concat( [df_tableau_multi, tableau_var['coef_multi']] , axis=1).rename(columns={"coef_multi" :"botmax1"}, inplace=True))
     multi_BX1 = st.checkbox('Bot max 1')
     
    
-    plot_courbes(crypto, tableau_var,multi_BX1, cumul_BX1)
+    #plot_courbes(crypto, tableau_var,multi_BX1, cumul_BX1)
+    plot_courbes2(df_tableau_multi)
     if st.checkbox('Voir tableau de variation'):
        st.write(tableau_var)
     
