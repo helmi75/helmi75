@@ -158,6 +158,15 @@ def main():
     st.write( df_tableau_multi.tail(1))
     if st.checkbox('Voir tableau de variation'):
        st.write(tableau_var)
+        
+    if st.button("Download tableau de varaition"):
+      
+            df_download = df_tableau_multi
+            csv = df_download.to_csv(index=False)
+            b64 = base64.b64encode(csv.encode()).decode()  # some strings
+            linko= f'<a href="data:file/csv;base64,{b64}" download= tableau_multi.csv> Download df_tableau_multi csv file</a>'
+            st.markdown(linko, unsafe_allow_html=True)
+      
     
     if st.button (" Download cryptos"):
       for elm in market :
