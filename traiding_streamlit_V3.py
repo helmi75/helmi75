@@ -82,10 +82,9 @@ def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
 
 
 def plot_courbes2(df_tableau_multi):
-    fig=go.Figure()
-     
+    fig=go.Figure()     
     for elm in df_tableau_multi.columns:
-               
+        st.write(elm)               
         fig.add_trace(go.Scatter(x= df_tableau_multi[elm].index, 
                                  y= df_tableau_multi[elm],
                                  mode='lines',
