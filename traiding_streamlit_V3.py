@@ -154,6 +154,8 @@ def main():
     plot_courbes2(df_tableau_multi)
     st.write( df_tableau_multi.tail(1))
     
+    
+    
     if st.checkbox('Voir tableau coef multi') :      
       st.write(df_tableau_multi)    
     
