@@ -96,7 +96,7 @@ def plot_courbes2(df_tableau_multi):
   
   
   
-  def plot_courbes3(
+  
 
 def main():
     
