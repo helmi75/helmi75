@@ -149,11 +149,12 @@ def main():
     
    
     #plot_courbes(crypto, tableau_var,multi_BX1, cumul_BX1)
-    plot_courbes2(df_tableau_multi)
+    
     if st.checkbox('Voir tableau coef multi') :
       df_tableau_multi = pd.concat( [df_tableau_multi, tableau_var['coef_multi']] , axis=1)
       df_tableau_multi = df_tableau_multi.rename(columns={"coef_multi" :"botmax1"})
       st.write(df_tableau_multi)
+    plot_courbes2(df_tableau_multi)
     if st.checkbox('Voir tableau de variation'):
        st.write(tableau_var)
     
