@@ -139,8 +139,8 @@ def main():
     tableau_var['algo'] = algo(tableau_var)
     tableau_var['coef_multi'] = tableau_var['algo'].cumprod()
     tableau_var['coef_cumul']= tableau_var['coef_multi'].apply(lambda x : (x*100)-100)
-    st.write(pd.concat( [df_tableau_multi, tableau_var['coef_multi']] , axis=1))
-    multi_BX1 = st.checkbox('multi_BX1')
+    st.write(pd.concat( [df_tableau_multi, tableau_var['coef_multi']] , axis=1).rename(columns={"coef_cumul" :"botmax1"))
+    multi_BX1 = st.checkbox('Bot max 1')
     cumul_BX1 = st.checkbox('cumul_BX1')
    
     plot_courbes(crypto, tableau_var,multi_BX1, cumul_BX1)
