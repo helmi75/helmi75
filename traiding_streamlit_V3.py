@@ -126,7 +126,8 @@ def main():
         crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
         crypto[x]  = fonction_cumul(crypto[x],x) 
         liste_tableau_multi.append(crypto[x]['coef_multi_'+x[:3]])
-    st.write(pd.concat(liste_tableau_multi, axis = 1))
+    df_tableau_multi = pd.concat(liste_tableau_multi, axis = 1))
+    
         
         
         
@@ -138,7 +139,7 @@ def main():
     tableau_var['algo'] = algo(tableau_var)
     tableau_var['coef_multi'] = tableau_var['algo'].cumprod()
     tableau_var['coef_cumul']= tableau_var['coef_multi'].apply(lambda x : (x*100)-100)
-    
+    st.write(pd.concat( [df_tableau_multi, tableau_var['coef_multi']]))
     multi_BX1 = st.checkbox('multi_BX1')
     cumul_BX1 = st.checkbox('cumul_BX1')
    
