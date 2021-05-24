@@ -153,9 +153,8 @@ def main():
     
     plot_courbes2(df_tableau_multi)
     if st.checkbox('Voir tableau coef multi') :      
-      st.write(df_tableau_multi)
-    for elm in df_tableau_multi.tail(1).columns :
-      st.line_chart (df_tableau_multi.tail(1)[elm])
+      st.write(df_tableau_multi)    
+    st.line_chart (df_tableau_multi.tail(1))
     st.write( df_tableau_multi.tail(1))
     if st.checkbox('Voir tableau de variation'):
        st.write(tableau_var)
