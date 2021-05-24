@@ -59,7 +59,7 @@ def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
         fig.add_trace(go.Scatter(x= tableau_var.index, 
                                  y= tableau_var['coef_multi'],
                                  mode='lines',
-                                 name='Bot max 1',
+                                 name='coef_multi_BX1',
                                  )) 
     
     if cumul_BX1 :
@@ -124,6 +124,7 @@ def main():
         crypto[x] = crypto[x].merge(variation(crypto[x]),on ='timestamp',how='left')
         crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
         crypto[x]  = fonction_cumul(crypto[x],x) 
+        st.write(crypto[x])
         
         
         
@@ -136,7 +137,7 @@ def main():
     tableau_var['coef_multi'] = tableau_var['algo'].cumprod()
     tableau_var['coef_cumul']= tableau_var['coef_multi'].apply(lambda x : (x*100)-100)
     
-    multi_BX1 = st.checkbox('Bot max 1')
+    multi_BX1 = st.checkbox('multi_BX1')
     cumul_BX1 = st.checkbox('cumul_BX1')
    
     plot_courbes(crypto, tableau_var,multi_BX1, cumul_BX1)
