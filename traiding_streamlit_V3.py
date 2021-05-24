@@ -83,8 +83,7 @@ def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
 
 def plot_courbes2(df_tableau_multi):
     fig=go.Figure()     
-    for elm in df_tableau_multi.columns:
-        st.write(elm)               
+    for elm in df_tableau_multi.columns:                     
         fig.add_trace(go.Scatter(x= df_tableau_multi[elm].index, 
                                  y= df_tableau_multi[elm],
                                  mode='lines',
@@ -145,16 +144,17 @@ def main():
     tableau_var['coef_multi'] = tableau_var['algo'].cumprod()
     tableau_var['coef_cumul']= tableau_var['coef_multi'].apply(lambda x : (x*100)-100)
     
-    multi_BX1 = st.checkbox('Bot max 1')
+    
     
    
-    #plot_courbes(crypto, tableau_var,multi_BX1, cumul_BX1)
+    
     
     if st.checkbox('Voir tableau coef multi') :
       df_tableau_multi = pd.concat( [df_tableau_multi, tableau_var['coef_multi']] , axis=1)
       df_tableau_multi = df_tableau_multi.rename(columns={"coef_multi" :"botmax1"})
       st.write(df_tableau_multi)
     plot_courbes2(df_tableau_multi)
+    st.write( df_tableau_multi.tail(1)
     if st.checkbox('Voir tableau de variation'):
        st.write(tableau_var)
     
