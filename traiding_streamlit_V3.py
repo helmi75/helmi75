@@ -119,12 +119,14 @@ def main():
     for elm in array_mauvais_shape :
         crypto[elm]['timestamp'] = generation_date (crypto[elm], int(delta_hour[:1]))
         crypto[elm] =  crypto[elm].set_index('timestamp') 
+    liste_tableau_multi=[]
     for elm in market : 
         x =elm.lower() 
         crypto[x] = crypto[x].merge(variation(crypto[x]),on ='timestamp',how='left')
         crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
         crypto[x]  = fonction_cumul(crypto[x],x) 
-        st.write(crypto[x])
+        liste_tableau_multi.append(crypto[x]['coef_multi_'+x[:3]])
+     st.write(liste_tableau_multi)
         
         
         
