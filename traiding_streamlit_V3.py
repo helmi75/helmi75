@@ -59,7 +59,7 @@ def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
         fig.add_trace(go.Scatter(x= tableau_var.index, 
                                  y= tableau_var['coef_multi'],
                                  mode='lines',
-                                 name='coef_multi_BX1',
+                                 name='Bot max 1',
                                  )) 
     
     if cumul_BX1 :
