@@ -154,7 +154,7 @@ def main():
       df_tableau_multi = df_tableau_multi.rename(columns={"coef_multi" :"botmax1"})
       st.write(df_tableau_multi)
     plot_courbes2(df_tableau_multi)
-    st.write( df_tableau_multi.tail(1)
+    st.write( df_tableau_multi.tail(1))
     if st.checkbox('Voir tableau de variation'):
        st.write(tableau_var)
     
