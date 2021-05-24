@@ -136,7 +136,7 @@ def main():
     tableau_var['coef_multi'] = tableau_var['algo'].cumprod()
     tableau_var['coef_cumul']= tableau_var['coef_multi'].apply(lambda x : (x*100)-100)
     
-    multi_BX1 = st.checkbox('multi_BX1')
+    multi_BX1 = st.checkbox('Bot max 1')
     cumul_BX1 = st.checkbox('cumul_BX1')
    
     plot_courbes(crypto, tableau_var,multi_BX1, cumul_BX1)
