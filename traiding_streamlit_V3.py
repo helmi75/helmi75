@@ -126,7 +126,7 @@ def main():
         crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
         crypto[x]  = fonction_cumul(crypto[x],x) 
         liste_tableau_multi.append(crypto[x]['coef_multi_'+x[:3]])
-    st.write(liste_tableau_multi)
+    st.write(pd.concat(liste_tableau_multi, axis = 1)
         
         
         
