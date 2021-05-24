@@ -166,7 +166,7 @@ def main():
             linko= f'<a href="data:file/csv;base64,{b64}" download= tableau_var.csv> Download tableau_var csv file</a>'
             st.markdown(linko, unsafe_allow_html=True)
             
-     if st.side.button("Download tableau coef multi "):      
+    if st.side.button("Download tableau coef multi "):      
             df_download = df_tableau_multi
             csv = df_download.to_csv(index=False)
             b64 = base64.b64encode(csv.encode()).decode()  # some strings
