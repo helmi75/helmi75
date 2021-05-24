@@ -155,7 +155,7 @@ def main():
     if st.checkbox('Voir tableau coef multi') :      
       st.write(df_tableau_multi)
     st.st.altair_chart (df_tableau_multi.tail(1))
-    st.write( df_tableau_multi.tail(1), use_container_width=True)
+    st.write( df_tableau_multi.tail(1))
     if st.checkbox('Voir tableau de variation'):
        st.write(tableau_var)
     
