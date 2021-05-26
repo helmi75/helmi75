@@ -22,7 +22,7 @@ from fonctions import *
 def choix_market():
   liste_crypto= np.array(['BTC/USDT', 'ETH/USDT', 'ADA/USDT','DOGE/USDT', 'BNB/USDT', 'UNI/USDT',
                     'LTC/USDT', 'BCH/USDT', 'LINK/USDT', 'VET/USDT', 'XLM/USDT', 'FIL/USDT','TRX/USDT', 
-                    'NEO/USDT','EOS/USDT','DOT/USDT'])
+                    'NEO/USDT','EOS/USDT','DOT/USDT','AAVE/USDT', 'MATIC/USDT', 'LUNA/USDT', 'THETA/USDT'])
   cols3 = st.beta_columns(3)    
   btc = cols3[0].checkbox('BTC/USDT')
   eth = cols3[0].checkbox('ETH/USDT')
@@ -41,9 +41,16 @@ def choix_market():
   eos = cols3[2].checkbox('EOS/USDT')
   dot = cols3[2].checkbox('DOT/USDT')
   
+  aave = cols3[2].checkbox('AAVE/USDT')
+  matic = cols3[2].checkbox('MATIC/USDT')
+  luna = cols3[2].checkbox('LUNA/USDT')
+  theta = cols3[2].checkbox('THETA/USDT')
+  
+  
+  
       
   liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
-                     ltc, bch, link, vet, xml, fil, trx, neo, eos, dot])    
+                     ltc, bch, link, vet, xml, fil, trx, neo, eos, dot, aave, matic, theta])    
   return liste_crypto[liste_boolean]
 
 def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
