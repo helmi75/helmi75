@@ -50,7 +50,7 @@ def choix_market():
   
       
   liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
-                     ltc, bch, link, vet, xml, fil, trx, neo, eos, dot, aave, matic, theta])    
+                     ltc, bch, link, vet, xml, fil, trx, neo, eos, dot, aave, matic, luna, theta])    
   return liste_crypto[liste_boolean]
 
 def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
