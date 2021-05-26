@@ -41,10 +41,10 @@ def choix_market():
   eos = cols3[2].checkbox('EOS/USDT')
   dot = cols3[2].checkbox('DOT/USDT')
   
-  aave = cols3[2].checkbox('AAVE/USDT')
-  matic = cols3[2].checkbox('MATIC/USDT')
-  luna = cols3[2].checkbox('LUNA/USDT')
-  theta = cols3[2].checkbox('THETA/USDT')
+  aave = cols3[0].checkbox('AAVE/USDT')
+  matic = cols3[1].checkbox('MATIC/USDT')
+  luna = cols3[0].checkbox('LUNA/USDT')
+  theta = cols3[1].checkbox('THETA/USDT')
   
   
   
