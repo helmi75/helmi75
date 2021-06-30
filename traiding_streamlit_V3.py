@@ -47,7 +47,7 @@ def choix_market():
   luna = cols3[0].checkbox('LUNA/USDT')
   theta = cols3[1].checkbox('THETA/USDT')
   sol  = cols3[1].checkbox('SOL/USDT')
-  ksm = cols3[1].checkbox('KSM/USDT')
+  ksm = cols3[0].checkbox('KSM/USDT')
   
   
   
