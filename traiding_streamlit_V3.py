@@ -23,7 +23,10 @@ from fonctions import *
 def choix_market():
   liste_crypto= np.array(['BTC/USDT', 'ETH/USDT', 'ADA/USDT','DOGE/USDT', 'BNB/USDT', 'UNI/USDT','SOL/USDT','KSM/USDT',
                     'LTC/USDT', 'BCH/USDT', 'LINK/USDT', 'VET/USDT', 'XLM/USDT', 'FIL/USDT','TRX/USDT', 
-                    'NEO/USDT','EOS/USDT','DOT/USDT','AAVE/USDT', 'MATIC/USDT', 'LUNA/USDT', 'THETA/USDT'])
+                    'NEO/USDT','EOS/USDT','DOT/USDT','AAVE/USDT', 'MATIC/USDT', 'LUNA/USDT', 'THETA/USDT', 
+                    'AXS/USDT', 'ENJ/USDT','SAND/USDT','WIN/USDT','SLP/USDT'])
+  
+    
   cols3 = st.beta_columns(3)    
   btc = cols3[0].checkbox('BTC/USDT')
   eth = cols3[0].checkbox('ETH/USDT')
@@ -49,11 +52,20 @@ def choix_market():
   sol  = cols3[1].checkbox('SOL/USDT')
   ksm = cols3[0].checkbox('KSM/USDT')
   
+  axs = cols3[2].checkbox('AXS/USDT')
+  enj = cols3[2].checkbox('ENJ/USDT')
+  sand = cols3[0].checkbox('SAND/USDT')
+  win = cols3[1].checkbox('WIN/USDT')
+  slp = cols3[2].checkbox('SLP/USDT')
+  
+ 
+  
+  
   
   
       
   liste_boolean = np.array([btc, eth, ada, doge, bnb, uni,
-                     ltc, bch, link, vet, xml, fil, trx, neo, eos, dot, aave, matic, luna, theta, sol, ksm])    
+                     ltc, bch, link, vet, xml, fil, trx, neo, eos, dot, aave, matic, luna, theta, sol, ksm, axs, enj, sand, win, slp])    
   return liste_crypto[liste_boolean]
 
 def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
