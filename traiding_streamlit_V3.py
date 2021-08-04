@@ -37,7 +37,7 @@ def choix_market():
   bch = cols3[1].checkbox('BCH/USDT')
   link = cols3[1].checkbox('LINK/USDT')
   vet = cols3[1].checkbox('VET/USDT')
-  xml = cols3[1].checkbox('XLM/USDT')
+  xlm = cols3[1].checkbox('XLM/USDT')
   fil = cols3[2].checkbox('FIL/USDT')
   ltc = cols3[2].checkbox('LTC/USDT')
   trx = cols3[2].checkbox('TRX/USDT')
