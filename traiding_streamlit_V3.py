@@ -67,7 +67,8 @@ def choix_market():
                     'AXS/USDT', 'ENJ/USDT','SAND/USDT','WIN/USDT','SLP/USDT'])
   
       
-  liste_boolean = np.array([btc, eth, ada, doge, bnb, uni ,sol ,ksm ,ltc ,bch ,link ,vet ,xlm ,fil ,trx ,neo ,eos ,dot ,aave ,matic ,luna ,theta ,axs ,enj ,sand ,win ,slp]}
+  liste_boolean = np.array([btc, eth, ada, doge, bnb, uni ,sol ,ksm ,ltc ,bch ,link ,vet ,xlm ,fil ,trx ,neo ,eos ,dot ,aave ,matic ,luna ,theta ,
+                            axs ,enj ,sand ,win ,slp])
                          
   return liste_crypto[liste_boolean]
 
