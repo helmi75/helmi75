@@ -61,10 +61,7 @@ def choix_market():
  
   
   
-  (['BTC/USDT', 'ETH/USDT', 'ADA/USDT','DOGE/USDT', 'BNB/USDT', 'UNI/USDT','SOL/USDT','KSM/USDT',
-                    'LTC/USDT', 'BCH/USDT', 'LINK/USDT', 'VET/USDT', 'XLM/USDT', 'FIL/USDT','TRX/USDT', 
-                    'NEO/USDT','EOS/USDT','DOT/USDT','AAVE/USDT', 'MATIC/USDT', 'LUNA/USDT', 'THETA/USDT', 
-                    'AXS/USDT', 'ENJ/USDT','SAND/USDT','WIN/USDT','SLP/USDT'])
+
   
       
   liste_boolean = np.array([btc, eth, ada, doge, bnb, uni ,sol ,ksm ,ltc ,bch ,link ,vet ,xlm ,fil ,trx ,neo ,eos ,dot ,aave ,matic ,luna ,theta ,
