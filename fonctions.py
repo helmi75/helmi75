@@ -250,7 +250,11 @@ def nom_crypto_achat_vente(tableau_var ):
         elif name_cryptos == 'LIN/USDT':
              name_cryptos = 'LINK/USDT'
         elif name_cryptos == 'SAN/USDT':
-             name_cryptos = 'SAND/USDT'
+             name_cryptos = 'SAND/USDT'            
+        elif name_cryptos == 'EGL/USDT':
+             name_cryptos = 'EGLD/USDT'
+        elif name_cryptos == 'ATO/USDT':
+             name_cryptos = 'ATOM/USDT'
         else :
             pass        
         return name_cryptos
