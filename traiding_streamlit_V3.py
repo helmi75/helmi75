@@ -24,7 +24,7 @@ def choix_market():
   liste_crypto= np.array(['BTC/USDT', 'ETH/USDT', 'ADA/USDT','DOGE/USDT', 'BNB/USDT', 'UNI/USDT','SOL/USDT','KSM/USDT',
                     'LTC/USDT', 'BCH/USDT', 'LINK/USDT', 'VET/USDT', 'XLM/USDT', 'FIL/USDT','TRX/USDT', 
                     'NEO/USDT','EOS/USDT','DOT/USDT','AAVE/USDT', 'MATIC/USDT', 'LUNA/USDT', 'THETA/USDT', 
-                    'AXS/USDT', 'ENJ/USDT','SAND/USDT','WIN/USDT','SLP/USDT','XRP/USDT'])
+                    'AXS/USDT', 'ENJ/USDT','SAND/USDT','WIN/USDT','SLP/USDT','XRP/USDT','EGLD/USDT','ATOM/USDT'])
   
     
   cols3 = st.beta_columns(3)    
@@ -59,6 +59,9 @@ def choix_market():
   slp = cols3[2].checkbox('SLP/USDT')
   xrp = cols3[0].checkbox('XRP/USDT')
   
+  egld = cols3[1].checkbox('EGLD/USDT')
+  atom = cols3[2].checkbox('ATOM/USDT')
+  
  
   
   
@@ -66,7 +69,7 @@ def choix_market():
   
       
   liste_boolean = np.array([btc, eth, ada, doge, bnb, uni ,sol ,ksm ,ltc ,bch ,link ,vet ,xlm ,fil ,trx ,neo ,eos ,dot ,aave ,matic ,luna ,theta ,
-                            axs ,enj ,sand ,win ,slp, xrp])
+                            axs ,enj ,sand ,win ,slp, xrp, egld, atom])
                          
   return liste_crypto[liste_boolean]
 
