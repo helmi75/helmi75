@@ -16,7 +16,7 @@ import plotly.express as px
 import streamlit as st
 import plotly.graph_objects as go
 import base64 
-
+from binance.client import Client
 from config import *
 from fonctions import *
 
@@ -27,7 +27,7 @@ def choix_market():
                     'AXS/USDT', 'ENJ/USDT','SAND/USDT','WIN/USDT','SLP/USDT','XRP/USDT','EGLD/USDT','ATOM/USDT'])
   
     
-  cols3 = st.beta_columns(3)    
+  cols3 = st.columns(3)    
   btc = cols3[0].checkbox('BTC/USDT')
   eth = cols3[0].checkbox('ETH/USDT')
   ada = cols3[0].checkbox('ADA/USDT')
@@ -87,8 +87,7 @@ def plot_courbes(crypto, tableau_var, multi_BX1, cumul_BX1):
                                  y= tableau_var['coef_multi'],
                                  mode='lines',
                                  name='coef_multi_BX1',
-                                 )) 
-    
+                                 ))
     if cumul_BX1 :
         fig.add_trace(go.Scatter(x= tableau_var.index, 
                                  y= tableau_var['coef_cumul'],
@@ -131,78 +130,75 @@ def main():
     
    
     
-      
+    client = Client()  
     crypto = {}
     boxmax ={}
     market= choix_market()
-    
     for elm in market :
-        x =elm.lower()   
-        crypto[x] = down_all_coin(elm ,star_time, end_time,delta_hour,exchange) #
-        crypto[x]=pd.DataFrame(data=crypto[x], columns=['timestamp', x[:3]+'_open', 'high','low', x[:3]+'_close', 'volume']) 
-        crypto[x] = crypto[x][['timestamp',x[:3]+'_open',x[:3]+'_close']]     
-        #crypto[x] = convert_time(crypto[x])
+
+         
+        x =elm.lower()
+
+        #crypto[x] = down_all_coin(elm ,star_time, end_time,delta_hour,exchange)
+        #crypto[x]=pd.DataFrame(data=crypto[x], columns=['timestamp', x[:3]+'_open', 'high','low', x[:3]+'_close', 'volume'])
+        #crypto[x] = crypto[x][['timestamp',x[:3]+'_open',x[:3]+'_close']]
+
+
+        
+
+        crypto[x] = client.get_historical_klines(x.replace("/","").upper(), delta_hour,star_time, end_time)
+        crypto[x]=pd.DataFrame(data=crypto[x], columns=['timestamp', x[:-5]+'_open', 'high', 'low', x[:-5]+'_close', 'volume', 'close_time', 'quote_av', 'trades', 'tb_base_av', 'tb_quote_av', 'ignore' ]) 
+        crypto[x] = crypto[x][['timestamp', x[:-5]+'_open', x[:-5]+'_close']]
+        crypto[x] = convert_time(crypto[x])
+        crypto[x] = crypto[x].astype({x[:-5]+'_open': 'float64',
+                                      x[:-5]+'_close': 'float64'
+                                    })
+
         crypto[x] = crypto[x].set_index('timestamp')
-    
-    
+               
+
+
     array_mauvais_shape = detection_mauvais_shape(crypto)
     crypto = correction_shape(crypto, array_mauvais_shape)
     for elm in array_mauvais_shape :
         crypto[elm]['timestamp'] = generation_date (crypto[elm], int(delta_hour[:1]))
-        crypto[elm] =  crypto[elm].set_index('timestamp') 
+        crypto[elm] = crypto[elm].set_index('timestamp') 
     liste_tableau_multi=[]
-    for elm in market : 
-        x =elm.lower() 
+    for elm in market :
+        x =elm.lower()
         crypto[x] = crypto[x].merge(variation(crypto[x]),on ='timestamp',how='left')
         crypto[x]['coef_multi_'+x[:3]]=coef_multi(crypto[x])
-        crypto[x]  = fonction_cumul(crypto[x],x) 
+        crypto[x]  = fonction_cumul(crypto[x],x)
         liste_tableau_multi.append(crypto[x]['coef_multi_'+x[:3]])
     df_tableau_multi = pd.concat(liste_tableau_multi, axis = 1)
-    
-        
-        
-        
-        
-        
-    df_liste_var =  fonction_tableau_var(crypto)   
-    tableau_var = meilleur_varaition(df_liste_var) 
-     
+    df_liste_var =  fonction_tableau_var(crypto)
+    tableau_var = meilleur_varaition(df_liste_var)
     tableau_var['algo'] = algo(tableau_var)
     tableau_var['coef_multi'] = tableau_var['algo'].cumprod()
     tableau_var['coef_cumul']= tableau_var['coef_multi'].apply(lambda x : (x*100)-100)
-    
-    
-    
-   
-    
     df_tableau_multi = pd.concat( [df_tableau_multi, tableau_var['coef_multi']] , axis=1)
     df_tableau_multi = df_tableau_multi.rename(columns={"coef_multi" :"botmax1"})
-    
     plot_courbes2(df_tableau_multi)
     st.write( df_tableau_multi.tail(1))
-    
-    
-    
-    if st.checkbox('Voir tableau coef multi') :      
-      st.write(df_tableau_multi)    
-    
+    if st.checkbox('Voir tableau coef multi'): 
+      st.write(df_tableau_multi)
+
     if st.checkbox('Voir tableau de variation'):
        st.write(tableau_var)
-        
-    if st.sidebar.button("Download tableau de variation "):      
+
+    if st.sidebar.button("Download tableau de variation "): 
             df_download = tableau_var
             csv = df_download.to_csv(index=False)
             b64 = base64.b64encode(csv.encode()).decode()  # some strings
             linko= f'<a href="data:file/csv;base64,{b64}" download= tableau_var.csv> Download tableau_var csv file</a>'
             st.markdown(linko, unsafe_allow_html=True)
-            
-    if st.sidebar.button("Download tableau coef multi "):      
+    if st.sidebar.button("Download tableau coef multi "):
             df_download = df_tableau_multi
             csv = df_download.to_csv(index=False)
             b64 = base64.b64encode(csv.encode()).decode()  # some strings
             linko= f'<a href="data:file/csv;base64,{b64}" download= tableau_multi.csv> Download df_tableau_multi csv file</a>'
             st.markdown(linko, unsafe_allow_html=True)
-    
+
     if st.sidebar.button (" Download cryptos"):
       for elm in market :
             df_download= crypto[elm.lower()].reset_index()
@@ -210,18 +206,6 @@ def main():
             b64 = base64.b64encode(csv.encode()).decode()  # some strings
             linko= f'<a href="data:file/csv;base64,{b64}" download='+elm.lower()+'.csv>Download '+elm.lower()[:3]+ ' csv file</a>'
             st.markdown(linko, unsafe_allow_html=True)
-    
-   
 
-    
-   
-    
-    
-  
-    
-    
-    
-    
-    
 if __name__ == '__main__':
     main()
