@@ -1,10 +1,14 @@
-- 👋 Hi, I’m @helmi75
-- 👀 I’m interested in 
-- 🌱 I’m currently learning datascience  , machine learning, and  deeep learning. 
-- 💞️ I’m looking to collaborate on project 
-- 📫 How to reach me ...
+-Hi, I'm @helmi75
 
-<!---
-helmi75/helmi75 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+👀 I'm interested in data science, machine learning, and deep learning.
+
+🌱 I'm currently learning and expanding my knowledge in these fields.
+
+💞️ I'm looking to collaborate on projects related to data science and machine learning.
+
+📫 You can reach me through the following channels:
+
+Email: helmichiha@gmail.com
+Phone: +33 6 44 66 04 96
+Location: Paris
+
